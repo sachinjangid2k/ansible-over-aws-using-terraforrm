@@ -1,0 +1,17 @@
+- hosts: all
+  become: true
+  tasks:
+   - package:
+       name: "httpd"
+       state: present
+   - copy:
+       src: index.php
+       dest: /var/www/html/index.php
+   - name: Change file ownership, group and permissions
+     ansible.builtin.file:
+        path: /var/www/html/index.php
+        state: touch
+        mode: u=rwx,g=rwx,o=rwx
+   - service:
+       name: "httpd"
+       state: started                                    
